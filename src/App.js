@@ -15,14 +15,7 @@ function App() {
     <Router>
       <div className="App">
         <Switch>
-          {/* <Route exact path="/signup" component={Signup} />
-          <Route exact path="/login" component={Login} />4
-           */}
           <Route path="/" component={SortURL} />
-
-          {/* <Route exact path="/" component={Header} /> */}
-          {/* <Route path="/:others" component={NoPageFound} /> */}
-
         </Switch>
       </div>
     </Router>
