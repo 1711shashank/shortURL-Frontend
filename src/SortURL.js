@@ -10,7 +10,6 @@ async function createSortURL(credentials) {
     });
 
     response = await response.json();
-    console.log(response);
     return response;
 
   }
@@ -58,18 +57,34 @@ function App() {
 
   }
 
-
-  const userData = [{ "Long Url ": "", "Sort URL": "" }];
+  const userData = [{ "Long Url ": "", "Sort URL": "", "URL Created Before":"", "Short URL Used":"" }];
   const [state, setState] = useState(userData);
   const [longUrl, setLongUrl] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let newData = { "Long Url ": longUrl, "Sort URL": "lc.com" };
+    let dataObj = await createSortURL({"longUrl":longUrl});
+    let newData = dataObj.urlData[0];
+
+    delete newData._id;  
+
     setState([...state, newData]);
 
   };
+
+
+  // const userData = [{ "Long Url ": "", "Sort URL": "" }];
+  // const [state, setState] = useState(userData);
+  // const [longUrl, setLongUrl] = useState();
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   let newData = { "Long Url ": longUrl, "Sort URL": "lc.com" };
+  //   setState([...state, newData]);
+
+  // };
 
 
   return (
