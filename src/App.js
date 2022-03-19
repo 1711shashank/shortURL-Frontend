@@ -15,6 +15,8 @@ function App() {
     <Router>
       <div className="App">
         <Switch>
+          <Route path="/Login" component={Login} />
+          <Route path="/Signup" component={Signup} />
           <Route path="/" component={SortURL} />
         </Switch>
       </div>
