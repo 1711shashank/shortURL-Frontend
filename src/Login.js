@@ -29,11 +29,13 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let response = await loginUser({ email, password });
-
+    console.log(response);
     if (response.statusCode === 200) {
       
       localStorage.setItem('isLoggedIn', true);
-      localStorage.setItem('Name', response.data.name);
+      localStorage.setItem('Name', response.data.user.name);
+      localStorage.setItem('token', response.data.token);
+
       history.push("/");
 
     } else if (response.statusCode === 401) {

@@ -3,13 +3,23 @@ import { useHistory } from "react-router-dom";
 
 async function createSortURL(credentials) {
   try {
+    var token = localStorage.getItem('token');
+    var header = {};
+    if (token) {
+     header = { 'Content-Type': 'application/json',
+        'Authorization':token
+     }
+    } else {
+      header = { 'Content-Type': 'application/json' }  
+   }
     let response = await fetch('http://localhost:5000/sortURL', {
-      headers: { 'Content-Type': 'application/json' },
+      headers: header,
       method: 'POST',
       body: JSON.stringify(credentials)
     });
 
     response = await response.json();
+    console.log("short url response ", response);
     return response;
 
   }
@@ -24,24 +34,55 @@ function App() {
   const history = useHistory();
   let [buttonValue, setButtonValue] = useState('Log In');
   let [checkUserAuth, setCheckUserAuth] = useState();
-  let [userDate, setUserDate] = useState('Hello');
+  let [userDate, setUserDate] = useState([]);
+  let [authUserState, setAuthUserState] = useState([]);
 
-  useEffect(async () => {
-    checkUserAuth = localStorage.getItem('isLoggedIn');
-    if (checkUserAuth === 'true') {
-      let userName = localStorage.getItem('Name');
 
-      setUserDate("Hello " + userName);
-      setButtonValue('Log Out');
-      document.querySelector('.createAccount').style.display = 'none';
+  useEffect(() => {
+    async function checking() {
+      setCheckUserAuth(localStorage.getItem('isLoggedIn'));
+      if (checkUserAuth === 'true') {
+        let userName = localStorage.getItem('Name');
 
+        setUserDate("Hello " + userName);
+        setButtonValue('Log Out');
+        document.querySelector('.createAccount').style.display = 'none';
+
+      }
+      else {
+        setUserDate("Hello ");
+        setButtonValue('Log In');
+        document.querySelector('.createAccount').style.display = 'block';
+      }
     }
-    else {
-      setUserDate("Hello ");
-      setButtonValue('Log In');
-      document.querySelector('.createAccount').style.display = 'block';
-    }
+    checking();
   });
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (localStorage.getItem('isLoggedIn')) {
+        let response = await fetch('http://localhost:5000/dashboard', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+          }
+        });
+        response = await response.json();
+        console.log("response dashboard: ", response.res);
+        response.res.urlData.forEach(element => {
+          console.log("element", element);
+          setUserDate([...userData, element ]);
+          console.log('response userdata', userData);
+
+
+        });
+        
+      }
+
+    }
+
+    // fetchUserData();
+  },[authUserState])
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -50,6 +91,7 @@ function App() {
     } else {
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('Name');
+      localStorage.removeItem('token');
       setButtonValue('Log In');
     }
 
@@ -65,11 +107,16 @@ function App() {
     e.preventDefault();
 
     let dataObj = await createSortURL({"longUrl":longUrl});
-    let newData = dataObj.urlData[0];
-
+    let newData = dataObj.data;
+    console.log("newData",newData);
     delete newData._id;  
+    // if (!localStorage.getItem("isLoggined")) {
+      setState([...state, newData]);
+      // console.log("set State", state);
+    // }
+    // else
+      // setAuthUserState([...authUserState,newData]);
 
-    setState([...state, newData]);
 
   };
 
