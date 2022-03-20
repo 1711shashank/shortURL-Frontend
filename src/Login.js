@@ -32,11 +32,20 @@ export default function Login() {
     console.log(response);
     if (response.statusCode === 200) {
 
-      localStorage.setItem('isLoggedIn', true);
-      localStorage.setItem('Name', response.data.user.name);
-      localStorage.setItem('token', response.data.token);
+      if (response.message === 'Admin LogIn Successfully') {
+        localStorage.setItem('isLoggedIn', true);
+        localStorage.setItem('Name', 'admin');
+        localStorage.setItem('token', response.data.token);
+        history.push("/adminPage");
+      }
+      else if (response.message === 'LogIn Successfully') {
+        localStorage.setItem('isLoggedIn', true);
+        localStorage.setItem('Name', response.data.user.name);
+        localStorage.setItem('token', response.data.token);
+        history.push("/");
+      }
 
-      history.push("/");
+      
 
     } else if (response.statusCode === 401) {
       setAlertError(response.message);

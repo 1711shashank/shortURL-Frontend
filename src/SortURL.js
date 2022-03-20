@@ -43,7 +43,6 @@ function SortURL() {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': localStorage.getItem('token')
-
         }
       });
 
@@ -56,6 +55,9 @@ function SortURL() {
   }
 
   useEffect(() => {
+    if( localStorage.getItem('Name') === 'admin'){
+      history.push("/adminPage");
+    }
     console.log("1st UserEffect");
     async function checking() {
       setCheckUserAuth(localStorage.getItem('isLoggedIn'));

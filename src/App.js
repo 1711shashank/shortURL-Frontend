@@ -8,7 +8,7 @@ import Login from "./Login";
 import SortURL from "./SortURL";
 import RedirectURL from "./RedirectURL";
 import NoPageFound from "./NoPageFound";
-import Header from "./Header";
+import AdminPage from "./AdminPage";
 
 function App() {
 
@@ -18,6 +18,7 @@ function App() {
         <Switch>
           <Route exact path="/Login" component={Login} />
           <Route exact path="/Signup" component={Signup} />
+          <Route exact path="/adminPage" component={AdminPage} />
           <Route exact path="/" component={SortURL} />
           <Route exact path="/:url" component={RedirectURL} />
         </Switch>
