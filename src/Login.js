@@ -13,7 +13,7 @@ async function loginUser(credentials) {
     return response;
 
   }
-  catch(err) {
+  catch (err) {
     console.error('Error:', err);
   }
 
@@ -31,7 +31,7 @@ export default function Login() {
     let response = await loginUser({ email, password });
     console.log(response);
     if (response.statusCode === 200) {
-      
+
       localStorage.setItem('isLoggedIn', true);
       localStorage.setItem('Name', response.data.user.name);
       localStorage.setItem('token', response.data.token);
@@ -52,8 +52,8 @@ export default function Login() {
       <h1>Log In</h1>
 
       {/* Below line can also be written as =>     {errorSet != '' && <h1>{errorSet}</h1>} */}
-      
-      {alertError !== '' ? <h3 style={{color: "red"}}> {alertError} </h3> : <h5></h5> }      
+
+      {alertError !== '' ? <h3 style={{ color: "red" }}> {alertError} </h3> : <h5></h5>}
 
       <form onSubmit={handleSubmit}>
         <label>
@@ -72,9 +72,9 @@ export default function Login() {
         </div>
       </form>
 
-     
 
-      <Link to = '/signup'>
+
+      <Link to='/signup'>
         <h5 style={{ textDecoration: 'none' }}> Click here to Signup if you don't have an Account</h5>
       </Link>
 

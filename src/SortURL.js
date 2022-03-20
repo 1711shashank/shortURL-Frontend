@@ -3,15 +3,13 @@ import { useHistory } from "react-router-dom";
 
 async function createSortURL(credentials) {
   try {
+
     var token = localStorage.getItem('token');
     var header = {};
-    if (token) {
-     header = { 'Content-Type': 'application/json',
-        'Authorization':token
-     }
-    } else {
-      header = { 'Content-Type': 'application/json' }  
-   }
+
+    if (token) { header = { 'Content-Type': 'application/json', 'Authorization': token } }
+    else { header = { 'Content-Type': 'application/json' } }
+
     let response = await fetch('http://localhost:5000/sortURL', {
       headers: header,
       method: 'POST',
@@ -46,13 +44,11 @@ function App() {
 
         setUserDate("Hello " + userName);
         setButtonValue('Log Out');
-        document.querySelector('.createAccount').style.display = 'none';
 
       }
       else {
         setUserDate("Hello ");
         setButtonValue('Log In');
-        document.querySelector('.createAccount').style.display = 'block';
       }
     }
     checking();
@@ -71,18 +67,18 @@ function App() {
         console.log("response dashboard: ", response.res);
         response.res.urlData.forEach(element => {
           console.log("element", element);
-          setUserDate([...userData, element ]);
+          setUserDate([...userData, element]);
           console.log('response userdata', userData);
 
 
         });
-        
+
       }
 
     }
 
     // fetchUserData();
-  },[authUserState])
+  }, [authUserState])
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -93,45 +89,35 @@ function App() {
       localStorage.removeItem('Name');
       localStorage.removeItem('token');
       setButtonValue('Log In');
+      window.location.reload(false);
     }
 
 
 
   }
 
-  const userData = [{ "Long Url ": "", "Sort URL": "", "URL Created Before":"", "Short URL Used":"" }];
+  const userData = [{ "Long Url ": "", "Sort URL": "", "URL Created Before": "", "Short URL Used": "" }];
   const [state, setState] = useState(userData);
   const [longUrl, setLongUrl] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let dataObj = await createSortURL({"longUrl":longUrl});
+    let dataObj = await createSortURL({ "longUrl": longUrl });
     let newData = dataObj.data;
-    console.log("newData",newData);
-    delete newData._id;  
+    console.log("newData", newData);
+    delete newData._id;
     // if (!localStorage.getItem("isLoggined")) {
-      setState([...state, newData]);
-      // console.log("set State", state);
+    setState([...state, newData]);
+    // console.log("set State", state);
     // }
     // else
-      // setAuthUserState([...authUserState,newData]);
+    // setAuthUserState([...authUserState,newData]);
 
 
   };
 
 
-  // const userData = [{ "Long Url ": "", "Sort URL": "" }];
-  // const [state, setState] = useState(userData);
-  // const [longUrl, setLongUrl] = useState();
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   let newData = { "Long Url ": longUrl, "Sort URL": "lc.com" };
-  //   setState([...state, newData]);
-
-  // };
 
 
   return (
@@ -140,7 +126,7 @@ function App() {
       <h1 > {userDate}  </h1>
 
       <button onClick={handleAuth}> {buttonValue} </button>
-      
+
       <form onSubmit={handleSubmit}>
         <input type="text" onChange={(e) => setLongUrl(e.target.value)} />
         <button type="submit"> Sort this URL</button>
@@ -161,27 +147,6 @@ function App() {
         ))}
       </table>
 
-
-      {/* <table class="table table-striped table-responsive">
-        <thead>
-          <tr>
-            <th>Full URL</th>
-            <th>Short URL</th>
-            <th>URL Created</th>
-            <th>URL Used</th>
-          </tr>
-        </thead>
-        
-        <thead>
-          <tr>
-            <th>FaceBook.com </th>
-            <th>my_Sort_URL_fb</th>
-            <th>1</th>
-            <th>10</th>
-          </tr>
-        </thead>
-
-      </table> */}
     </div>
   );
 }
