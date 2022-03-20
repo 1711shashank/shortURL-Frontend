@@ -28,57 +28,70 @@ async function createSortURL(credentials) {
 }
 
 function App() {
-
   const history = useHistory();
   let [buttonValue, setButtonValue] = useState('Log In');
   let [checkUserAuth, setCheckUserAuth] = useState();
-  let [userDate, setUserDate] = useState([]);
+  let [userName, setUserName] = useState([]);
   let [authUserState, setAuthUserState] = useState([]);
 
 
+
+  // const userData = [{ "Long Url ": "Long Url", "Sort URL": "Sort URL", "URL Created Before": "URL Created Before", "Short URL Used": "Short URL Used" }];
+  const userData = [{ "Long Url": "", "Sort URL": "", "URL Created Before": "", "Short URL Used": "" }];
+  const [state, setState] = useState(userData);
+  const [longUrl, setLongUrl] = useState();
+
+
   useEffect(() => {
+    console.log("1st UserEffect");
     async function checking() {
       setCheckUserAuth(localStorage.getItem('isLoggedIn'));
       if (checkUserAuth === 'true') {
         let userName = localStorage.getItem('Name');
 
-        setUserDate("Hello " + userName);
+
+        setUserName("Hello " + userName);
         setButtonValue('Log Out');
 
       }
       else {
-        setUserDate("Hello ");
+        setUserName("Hello ");
         setButtonValue('Log In');
       }
     }
     checking();
   });
 
-  useEffect(() => {
-    async function fetchUserData() {
-      if (localStorage.getItem('isLoggedIn')) {
-        let response = await fetch('http://localhost:5000/dashboard', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('token')
-          }
-        });
-        response = await response.json();
-        console.log("response dashboard: ", response.res);
-        response.res.urlData.forEach(element => {
-          console.log("element", element);
-          setUserDate([...userData, element]);
-          console.log('response userdata', userData);
+  async function fetchUserData() {
+    if (localStorage.getItem('isLoggedIn')) {
+      let response = await fetch('http://localhost:5000/dashboard', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        }
+      });
 
+      response = await response.json();
+      response = response.res.urlData;
+      console.log("response dashboard: ", response);
 
-        });
+      // userData.push(response);
 
+      for(let i=0;i<response.length;i++){
+        delete response[i]._id;
+         userData.push(response[i]);
       }
 
-    }
+      console.log("userData", userData);
+      console.log("state", state);
 
-    // fetchUserData();
-  }, [authUserState])
+    }
+  }
+
+  useEffect(() => {
+    console.log("2nd UserEffect");
+    fetchUserData();
+  })
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -96,9 +109,6 @@ function App() {
 
   }
 
-  const userData = [{ "Long Url ": "", "Sort URL": "", "URL Created Before": "", "Short URL Used": "" }];
-  const [state, setState] = useState(userData);
-  const [longUrl, setLongUrl] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,23 +117,13 @@ function App() {
     let newData = dataObj.data;
     console.log("newData", newData);
     delete newData._id;
-    // if (!localStorage.getItem("isLoggined")) {
     setState([...state, newData]);
-    // console.log("set State", state);
-    // }
-    // else
-    // setAuthUserState([...authUserState,newData]);
-
-
   };
-
-
-
 
   return (
     <div className="App">
       <h1> Sort URL</h1>
-      <h1 > {userDate}  </h1>
+      <h1 > {userName}  </h1>
 
       <button onClick={handleAuth}> {buttonValue} </button>
 
