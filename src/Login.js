@@ -35,6 +35,9 @@ export default function Login() {
       localStorage.setItem('isLoggedIn', true);
       localStorage.setItem('Name', response.data.user.name);
       localStorage.setItem('token', response.data.token);
+      let urlData = response.data.user.urlData;
+
+
 
       history.push("/");
 

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
+// import Table from 'react-bootstrap/Table';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 async function createSortURL(credentials) {
   try {
@@ -32,22 +36,30 @@ function App() {
   const history = useHistory();
   let [buttonValue, setButtonValue] = useState('Log In');
   let [checkUserAuth, setCheckUserAuth] = useState();
-  let [userDate, setUserDate] = useState([]);
+  let [userName, setUserName] = useState([]);
   let [authUserState, setAuthUserState] = useState([]);
 
 
+  // const userData = [{ "Long Url ": "Long Url", "Sort URL": "Sort URL", "URL Created Before": "URL Created Before", "Short URL Used": "Short URL Used" }];
+  const userData = [{ "Long Url ": "", "Sort URL": "", "URL Created Before": "", "Short URL Used": "" }];
+  const [state, setState] = useState(userData);
+  const [longUrl, setLongUrl] = useState();
+
+
   useEffect(() => {
+    console.log("1st UserEffect");
     async function checking() {
       setCheckUserAuth(localStorage.getItem('isLoggedIn'));
       if (checkUserAuth === 'true') {
         let userName = localStorage.getItem('Name');
 
-        setUserDate("Hello " + userName);
+
+        setUserName("Hello " + userName);
         setButtonValue('Log Out');
 
       }
       else {
-        setUserDate("Hello ");
+        setUserName("Hello ");
         setButtonValue('Log In');
       }
     }
@@ -55,6 +67,8 @@ function App() {
   });
 
   useEffect(() => {
+    console.log("2nd UserEffect");
+
     async function fetchUserData() {
       if (localStorage.getItem('isLoggedIn')) {
         let response = await fetch('http://localhost:5000/dashboard', {
@@ -63,22 +77,23 @@ function App() {
             'Authorization': localStorage.getItem('token')
           }
         });
+
         response = await response.json();
-        console.log("response dashboard: ", response.res);
-        response.res.urlData.forEach(element => {
-          console.log("element", element);
-          setUserDate([...userData, element]);
-          console.log('response userdata', userData);
+        response = response.res.urlData;
+        console.log("response dashboard: ", response);
 
+        userData.push(response);
 
-        });
+        console.log("userData",userData);
+        console.log("state",state);
+
 
       }
 
     }
 
-    // fetchUserData();
-  }, [authUserState])
+    fetchUserData();
+  })
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -95,10 +110,6 @@ function App() {
 
 
   }
-
-  const userData = [{ "Long Url ": "", "Sort URL": "", "URL Created Before": "", "Short URL Used": "" }];
-  const [state, setState] = useState(userData);
-  const [longUrl, setLongUrl] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,28 +134,43 @@ function App() {
   return (
     <div className="App">
       <h1> Sort URL</h1>
-      <h1 > {userDate}  </h1>
+      <h1 > {userName}  </h1>
 
       <button onClick={handleAuth}> {buttonValue} </button>
-
+      
       <form onSubmit={handleSubmit}>
         <input type="text" onChange={(e) => setLongUrl(e.target.value)} />
         <button type="submit"> Sort this URL</button>
       </form>
 
-      <table>
-        <tr key={"header"}>
-          {Object.keys(state[0]).map((key) => (
-            <th>{key}</th>
-          ))}
-        </tr>
-        {state.map((item) => (
-          <tr key={item.id}>
-            {Object.values(item).map((val) => (
-              <td>{val}</td>
-            ))}
+
+      <table >
+
+        <tbody>
+          <tr>
+            <td> <th>Long Url              </th>         </td>
+            <td> <th>Sort URL              </th>         </td>
+            <td> <th>URL Created Before    </th>	       </td>
+            <td> <th>Short URL Used        </th>         </td>
           </tr>
-        ))}
+
+        </tbody>
+
+        <tbody bordered={true}>
+
+          {state.map((item) => (
+
+            <tr>
+              
+              {Object.values(item).map((val) => (
+                <td>{val}</td>
+              ))}
+            </tr>
+
+          ))}
+        </tbody>
+
+
       </table>
 
     </div>
