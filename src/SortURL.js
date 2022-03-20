@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 async function createSortURL(credentials) {
   try {
@@ -127,7 +128,8 @@ function SortURL() {
           // <tr key={item.id}>
           <tr>
             <td>{item.longUrl}</td>
-            <td>{item.sortUrl}</td>
+            <td style={{color:"blue"}} onClick={() => { window.location.assign(`${item.sortUrl}`) }
+}>{ item.sortUrl}</td>
             <td>{item.urlCreatedCount}</td>
             <td>{item.urlUsedCount}</td>
           </tr>
