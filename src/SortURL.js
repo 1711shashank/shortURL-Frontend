@@ -27,20 +27,32 @@ async function createSortURL(credentials) {
 
 }
 
-function App() {
+function SortURL() {
   const history = useHistory();
   let [buttonValue, setButtonValue] = useState('Log In');
   let [checkUserAuth, setCheckUserAuth] = useState();
   let [userName, setUserName] = useState([]);
-  let [authUserState, setAuthUserState] = useState([]);
 
-
-
-  // const userData = [{ "Long Url ": "Long Url", "Sort URL": "Sort URL", "URL Created Before": "URL Created Before", "Short URL Used": "Short URL Used" }];
-  const userData = [{ "Long Url": "", "Sort URL": "", "URL Created Before": "", "Short URL Used": "" }];
-  const [state, setState] = useState(userData);
+  const [state, setState] = useState([]);
   const [longUrl, setLongUrl] = useState();
 
+  async function fetchUserData() {
+    if (localStorage.getItem('isLoggedIn')) {
+      let response = await fetch('http://localhost:5000/dashboard', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+
+        }
+      });
+
+      response = await response.json();
+      setState(response.res.urlData);
+
+      console.log("response dashboard: ", response);
+
+    }
+  }
 
   useEffect(() => {
     console.log("1st UserEffect");
@@ -61,37 +73,11 @@ function App() {
     }
     checking();
   });
-
-  async function fetchUserData() {
-    if (localStorage.getItem('isLoggedIn')) {
-      let response = await fetch('http://localhost:5000/dashboard', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('token')
-        }
-      });
-
-      response = await response.json();
-      response = response.res.urlData;
-      console.log("response dashboard: ", response);
-
-      // userData.push(response);
-
-      for(let i=0;i<response.length;i++){
-        delete response[i]._id;
-         userData.push(response[i]);
-      }
-
-      console.log("userData", userData);
-      console.log("state", state);
-
-    }
-  }
-
+  
   useEffect(() => {
     console.log("2nd UserEffect");
     fetchUserData();
-  })
+  },[])
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -109,15 +95,12 @@ function App() {
 
   }
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let dataObj = await createSortURL({ "longUrl": longUrl });
-    let newData = dataObj.data;
-    console.log("newData", newData);
-    delete newData._id;
-    setState([...state, newData]);
+    await createSortURL({ "longUrl": longUrl });
+    await fetchUserData();
+    
   };
 
   return (
@@ -134,15 +117,19 @@ function App() {
 
       <table>
         <tr key={"header"}>
-          {Object.keys(state[0]).map((key) => (
-            <th>{key}</th>
-          ))}
+          <th>Long Url</th>
+          <th>Sort URL</th>
+          <th>URL Created Before</th>
+          <th>Short URL Used</th>
         </tr>
+
         {state.map((item) => (
-          <tr key={item.id}>
-            {Object.values(item).map((val) => (
-              <td>{val}</td>
-            ))}
+          // <tr key={item.id}>
+          <tr>
+            <td>{item.longUrl}</td>
+            <td>{item.sortUrl}</td>
+            <td>{item.urlCreatedCount}</td>
+            <td>{item.urlUsedCount}</td>
           </tr>
         ))}
       </table>
@@ -151,4 +138,4 @@ function App() {
   );
 }
 
-export default App;
+export default SortURL;
