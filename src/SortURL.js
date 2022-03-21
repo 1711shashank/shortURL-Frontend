@@ -55,7 +55,7 @@ function SortURL() {
   }
 
   useEffect(() => {
-    if( localStorage.getItem('Name') === 'admin'){
+    if (localStorage.getItem('Name') === 'admin') {
       history.push("/adminPage");
     }
     console.log("1st UserEffect");
@@ -76,11 +76,11 @@ function SortURL() {
     }
     checking();
   });
-  
+
   useEffect(() => {
     console.log("2nd UserEffect");
     fetchUserData();
-  },[])
+  }, [])
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -103,7 +103,7 @@ function SortURL() {
 
     await createSortURL({ "longUrl": longUrl });
     await fetchUserData();
-    
+
   };
 
   return (
@@ -127,11 +127,10 @@ function SortURL() {
         </tr>
 
         {state.map((item) => (
-          // <tr key={item.id}>
           <tr>
             <td>{item.longUrl}</td>
-            <td style={{color:"blue"}} onClick={() => { window.location.assign(`${item.sortUrl}`) }
-}>{ item.sortUrl}</td>
+            <td style={{ color: "blue" }} onClick={() => { window.location.assign(`${item.sortUrl}`) }
+            }>{item.sortUrl}</td>
             <td>{item.urlCreatedCount}</td>
             <td>{item.urlUsedCount}</td>
           </tr>
