@@ -60,18 +60,17 @@ function SortURL() {
   }
 
   useEffect(() => {
-    // if (localStorage.getItem('Name') === 'admin') {
-    //   history.push("/adminPage");
-    // }
+    if (localStorage.getItem('Name') === 'admin') {
+      history.push("/adminPage");
+    }
     console.log("1st UserEffect");
     async function checking() {
       setCheckUserAuth(localStorage.getItem('isLoggedIn'));
       if (checkUserAuth === 'true') {
         let userName = localStorage.getItem('Name');
 
-
         setUserName("Hello " + userName);
-        setButtonValue('Log Out');
+        history.push("/");
 
       }
       else {
@@ -129,9 +128,7 @@ function SortURL() {
           variant="outlined"
           onChange={(e) => setLongUrl(e.target.value)}
         />
-
       </Box>
-
 
       <UserTable state={state} />
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -47,8 +47,6 @@ export default function Login() {
         localStorage.setItem('token', response.data.token);
         history.push("/");
       }
-
-
 
     } else if (response.statusCode === 401) {
       setAlertError(response.message);
