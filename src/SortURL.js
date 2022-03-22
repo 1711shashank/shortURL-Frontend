@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import UserTable from './UserTable';
+
 
 async function createSortURL(credentials) {
   try {
@@ -55,9 +60,9 @@ function SortURL() {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('Name') === 'admin') {
-      history.push("/adminPage");
-    }
+    // if (localStorage.getItem('Name') === 'admin') {
+    //   history.push("/adminPage");
+    // }
     console.log("1st UserEffect");
     async function checking() {
       setCheckUserAuth(localStorage.getItem('isLoggedIn'));
@@ -94,8 +99,6 @@ function SortURL() {
       window.location.reload(false);
     }
 
-
-
   }
 
   const handleSubmit = async (e) => {
@@ -111,31 +114,26 @@ function SortURL() {
       <h1> Sort URL</h1>
       <h1 > {userName}  </h1>
 
-      <button onClick={handleAuth}> {buttonValue} </button>
+      <Button variant="contained" onClick={handleAuth}>{buttonValue}</Button>
 
-      <form onSubmit={handleSubmit}>
-        <input type="text" onChange={(e) => setLongUrl(e.target.value)} />
-        <button type="submit"> Sort this URL</button>
-      </form>
+      <Box
+        component="form"
+        sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <TextField
+          id="outlined-basic"
+          label="Enter URL"
+          variant="outlined"
+          onChange={(e) => setLongUrl(e.target.value)}
+        />
 
-      <table>
-        <tr key={"header"}>
-          <th>Long Url</th>
-          <th>Sort URL</th>
-          <th>URL Created Before</th>
-          <th>Short URL Used</th>
-        </tr>
+      </Box>
 
-        {state.map((item) => (
-          <tr>
-            <td>{item.longUrl}</td>
-            <td style={{ color: "blue" }} onClick={() => { window.location.assign(`${item.sortUrl}`) }
-            }>{item.sortUrl}</td>
-            <td>{item.urlCreatedCount}</td>
-            <td>{item.urlUsedCount}</td>
-          </tr>
-        ))}
-      </table>
+
+      <UserTable state={state} />
 
     </div>
   );

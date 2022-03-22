@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 async function loginUser(credentials) {
   try {
@@ -29,12 +32,12 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let response = await loginUser({ email, password });
-    console.log(response);
+    console.log("Login Response", response);
     if (response.statusCode === 200) {
 
       if (response.message === 'Admin LogIn Successfully') {
         localStorage.setItem('isLoggedIn', true);
-        localStorage.setItem('Name', 'admin');
+        localStorage.setItem('Name', response.data.user.name);
         localStorage.setItem('token', response.data.token);
         history.push("/adminPage");
       }
@@ -45,7 +48,7 @@ export default function Login() {
         history.push("/");
       }
 
-      
+
 
     } else if (response.statusCode === 401) {
       setAlertError(response.message);
@@ -64,24 +67,32 @@ export default function Login() {
 
       {alertError !== '' ? <h3 style={{ color: "red" }}> {alertError} </h3> : <h5></h5>}
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          <p>Email</p>
-          <input type="text" onChange={(e) => setEmail(e.target.value)} />
-        </label>
-        <label>
-          <p>Password</p>
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <div>
-          <button type="submit"> LogIn </button>
-        </div>
-      </form>
 
 
+      <Box
+        component="form"
+        sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+          size="small"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Password"
+          type="password"
+          size="small"
+          variant="outlined"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button type="submit" variant="contained">Log in</Button>
+      </Box>
 
       <Link to='/signup'>
         <h5 style={{ textDecoration: 'none' }}> Click here to Signup if you don't have an Account</h5>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from "react-router-dom";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 async function signupUser(credentials) {
   try {
@@ -14,7 +17,7 @@ async function signupUser(credentials) {
     return response;
 
   }
-  catch(err) {
+  catch (err) {
     console.error('Error:', err);
   }
 
@@ -30,11 +33,11 @@ export default function Signup() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    let response = await signupUser({ name, email, password});
-    if(response.statusCode === 200){
+    let response = await signupUser({ name, email, password });
+    if (response.statusCode === 200) {
       setResMessage(response.message);
     }
-    if(response.statusCode === 409){
+    if (response.statusCode === 409) {
       setResMessage(response.message);
     }
   }
@@ -46,25 +49,40 @@ export default function Signup() {
         ? <h3 style={{ color: "palegreen" }}> {resMessage} </h3>
         : <h3></h3>
       }
-      <form onSubmit={handleSubmit}>
-        <label>
-          <p>Name</p>
-          <input type="text" onChange={e => setName(e.target.value)} required/>
-        </label>
-        <label>
-          <p>Email</p>
-          <input type="email" onChange={e => setEmail(e.target.value)} required/>
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)} required/>
-        </label>
-        <div>
-          <button type="submit"> Create Account </button>
-        </div>
-      </form>
 
-      <Link to = '/login'>
+      <Box
+        component="form"
+        sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <TextField
+          id="outlined-basic"
+          label="Name"
+          variant="outlined"
+          size="small"
+          onChange={e => setName(e.target.value)} 
+        />
+        <TextField
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+          size="small"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Password"
+          type="password"
+          variant="outlined"
+          size="small"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button type="submit" variant="contained">Log in</Button>
+      </Box>
+
+      <Link to='/login'>
         <h5 style={{ textDecoration: 'none' }}> Click here to LogIn if you already have an Account</h5>
       </Link>
     </div>
