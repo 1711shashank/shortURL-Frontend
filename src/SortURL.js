@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import UserTable from './UserTable';
+import Header from './Header';
 
 
 async function createSortURL(credentials) {
@@ -91,14 +92,17 @@ function SortURL() {
     if (buttonValue === 'Log In') {
       history.push('/login')
     } else {
+
+      setButtonValue('Log In');
+
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('Name');
       localStorage.removeItem('token');
-      setButtonValue('Log In');
       window.location.reload(false);
-    }
 
+    }
   }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,10 +114,11 @@ function SortURL() {
 
   return (
     <div className="App">
+      {/* <Header/> */}
       <h1> Sort URL</h1>
       <h1 > {userName}  </h1>
 
-      <Button variant="contained" onClick={handleAuth}>{buttonValue}</Button>
+      <Button type='submit' variant="contained" onClick={handleAuth}>{buttonValue}</Button>
 
       <Box
         component="form"

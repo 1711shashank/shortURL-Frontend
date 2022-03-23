@@ -1,58 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-// import 'bootstrap/dist/css/bootstrap.css';
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></link>
+import Button from '@mui/material/Button';
+
+
 
 
 function Header() {
-
   const history = useHistory();
   let [buttonValue, setButtonValue] = useState('Log In');
+  let [userName, setUserName] = useState([]);
   let [checkUserAuth, setCheckUserAuth] = useState();
-  let [userDate, setUserDate] = useState('Hello');
 
-  useEffect(async () => {
-    checkUserAuth = localStorage.getItem('isLoggedIn');
-    if (checkUserAuth === 'true') {
-      let userName = localStorage.getItem('Name');
 
-      setUserDate("Hello " + userName);
-      setButtonValue('Log Out');
-      document.querySelector('.createAccount').style.display = 'none';
-
+  useEffect(() => {
+    if (localStorage.getItem('Name') === 'admin') {
+      history.push("/adminPage");
     }
-    else {
+    console.log("1st UserEffect");
+    async function checking() {
+      setCheckUserAuth(localStorage.getItem('isLoggedIn'));
+      if (checkUserAuth === 'true') {
+        let userName = localStorage.getItem('Name');
 
-      setUserDate("Hello");
-      setButtonValue('Log In');
-      document.querySelector('.createAccount').style.display = 'block';
+        setUserName("Hello " + userName);
+        history.push("/");
 
+      }
+      else {
+        setUserName("Hello ");
+        setButtonValue('Log In');
+      }
     }
+    checking();
   });
 
-  const handleClick = async (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
-
     if (buttonValue === 'Log In') {
       history.push('/login')
     } else {
+
+      setButtonValue('Log In');
+
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('Name');
-      setButtonValue('Log In');
+      localStorage.removeItem('token');
+      window.location.reload(false);
+
     }
-
-  }
-
-  const handleCreateAccountBtn = () => {
-    history.push('/signup');
   }
 
 
   return (
-    <div>
-      <h1 > {userDate}  </h1>
-      <button onClick={handleCreateAccountBtn} className='createAccount'> Create Account </button>
-      <button onClick={handleClick}> {buttonValue} </button>
+    <div className='header'>
+      <div className='header__userName'><h1 > {userName}  </h1></div>
+      <div className='header__heading'> <h1> Sort URL</h1> </div>
+      <div className='header__loginBtn'>
+        <Button variant="contained" onClick={handleAuth}>{buttonValue}</Button>
+      </div>
+
     </div>
   )
 }
