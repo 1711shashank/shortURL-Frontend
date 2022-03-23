@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import Button from '@mui/material/Button';
-
+import "./Header.css";
 
 
 
@@ -13,7 +13,7 @@ function Header() {
 
 
   useEffect(() => {
-    if (localStorage.getItem('Name') === 'admin') {
+    if( localStorage.getItem('Name') === 'admin'){
       history.push("/adminPage");
     }
     console.log("1st UserEffect");
@@ -22,8 +22,9 @@ function Header() {
       if (checkUserAuth === 'true') {
         let userName = localStorage.getItem('Name');
 
+
         setUserName("Hello " + userName);
-        history.push("/");
+        setButtonValue('Log Out');
 
       }
       else {

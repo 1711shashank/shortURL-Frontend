@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import UserTable from './UserTable';
 import Header from './Header';
+import "./SortURL.css";
+
 
 
 async function createSortURL(credentials) {
@@ -35,10 +35,6 @@ async function createSortURL(credentials) {
 }
 
 function SortURL() {
-  const history = useHistory();
-  let [buttonValue, setButtonValue] = useState('Log In');
-  let [checkUserAuth, setCheckUserAuth] = useState();
-  let [userName, setUserName] = useState([]);
 
   const [state, setState] = useState([]);
   const [longUrl, setLongUrl] = useState();
@@ -61,47 +57,9 @@ function SortURL() {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('Name') === 'admin') {
-      history.push("/adminPage");
-    }
-    console.log("1st UserEffect");
-    async function checking() {
-      setCheckUserAuth(localStorage.getItem('isLoggedIn'));
-      if (checkUserAuth === 'true') {
-        let userName = localStorage.getItem('Name');
-
-        setUserName("Hello " + userName);
-        history.push("/");
-
-      }
-      else {
-        setUserName("Hello ");
-        setButtonValue('Log In');
-      }
-    }
-    checking();
-  });
-
-  useEffect(() => {
     console.log("2nd UserEffect");
     fetchUserData();
   }, [])
-
-  const handleAuth = async (e) => {
-    e.preventDefault();
-    if (buttonValue === 'Log In') {
-      history.push('/login')
-    } else {
-
-      setButtonValue('Log In');
-
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('Name');
-      localStorage.removeItem('token');
-      window.location.reload(false);
-
-    }
-  }
 
 
   const handleSubmit = async (e) => {
@@ -113,29 +71,30 @@ function SortURL() {
   };
 
   return (
-    <div className="App">
-      {/* <Header/> */}
-      <h1> Sort URL</h1>
-      <h1 > {userName}  </h1>
+    <div className="SortURL">
+      <Header />
 
-      <Button type='submit' variant="contained" onClick={handleAuth}>{buttonValue}</Button>
+      <div className='SortURL__inputURL'>
 
-      <Box
-        component="form"
-        sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
-      >
-        <TextField
-          id="outlined-basic"
-          label="Enter URL"
-          variant="outlined"
-          onChange={(e) => setLongUrl(e.target.value)}
-        />
-      </Box>
+        <Box
+          component="form"
+          sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            id="outlined-basic"
+            label="Enter URL"
+            variant="outlined"
+            onChange={(e) => setLongUrl(e.target.value)}
+          />
+        </Box>
+      </div>
 
-      <UserTable state={state} />
+      <div className='SortURL__Table'>
+        <UserTable state={state} />
+      </div>
 
     </div>
   );
