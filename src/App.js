@@ -7,7 +7,6 @@ import Signup from "./Signup";
 import Login from "./Login";
 import UserPage from "./UserPage";
 import RedirectURL from "./RedirectURL";
-import NoPageFound from "./NoPageFound";
 import AdminPage from "./AdminPage";
 
 function App() {

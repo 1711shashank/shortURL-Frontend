@@ -44,6 +44,9 @@ function UserPage() {
     if (localStorage.getItem('role') === 'admin') {
       history.push("/adminPage");
     }
+    if(localStorage.getItem('token') === null){
+      history.push("/Login");
+    }
     fetchUserData();
   }, [])
 
