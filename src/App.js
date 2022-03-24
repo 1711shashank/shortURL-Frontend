@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Signup from "./Signup";
 import Login from "./Login";
-import SortURL from "./SortURL";
+import UserPage from "./UserPage";
 import RedirectURL from "./RedirectURL";
 import NoPageFound from "./NoPageFound";
 import AdminPage from "./AdminPage";
@@ -19,7 +19,7 @@ function App() {
           <Route exact path="/Login" component={Login} />
           <Route exact path="/Signup" component={Signup} />
           <Route exact path="/adminPage" component={AdminPage} />
-          <Route exact path="/" component={SortURL} />
+          <Route exact path="/" component={UserPage} />
           <Route exact path="/:url" component={RedirectURL} />
         </Switch>
       </div>

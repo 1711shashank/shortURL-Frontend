@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import UserTable from './UserTable';
+import TextField from '@mui/material/TextField';
 import Header from './Header';
-import "./SortURL.css";
-
-
+import "./App.css";
 
 async function createSortURL(credentials) {
   try {
@@ -34,10 +32,17 @@ async function createSortURL(credentials) {
 
 }
 
-function SortURL() {
-
+function UserPage() {
+  const history = useHistory();
   const [state, setState] = useState([]);
   const [longUrl, setLongUrl] = useState();
+
+  useEffect(() => {
+    if (localStorage.getItem('Name') === 'admin') {
+      history.push("/adminPage");
+    }
+    fetchUserData();
+  }, [])
 
   async function fetchUserData() {
     if (localStorage.getItem('isLoggedIn')) {
@@ -56,26 +61,16 @@ function SortURL() {
     }
   }
 
-  useEffect(() => {
-    console.log("2nd UserEffect");
-    fetchUserData();
-  }, [])
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     await createSortURL({ "longUrl": longUrl });
     await fetchUserData();
-
   };
 
   return (
-    <div className="SortURL">
+    <div className="UserPage">
       <Header />
-
-      <div className='SortURL__inputURL'>
-
+      <div className='Page__inputURL'>
         <Box
           component="form"
           sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
@@ -91,13 +86,12 @@ function SortURL() {
           />
         </Box>
       </div>
-
-      <div className='SortURL__Table'>
-        <UserTable state={state} />
+      <div className='Page__Table'>
+      <UserTable state={state} />
       </div>
 
     </div>
   );
 }
 
-export default SortURL;
+export default UserPage;

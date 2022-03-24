@@ -26,7 +26,6 @@ async function signupUser(credentials) {
 }
 
 export default function Signup() {
-  const history = useHistory();
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -82,7 +81,7 @@ export default function Signup() {
             size="small"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" variant="contained">Log in</Button>
+          <Button type="submit" variant="contained" >Create Account</Button>
         </Box>
         <Link to='/login'>
           <h5 style={{ textDecoration: 'none' }}> Click here to LogIn </h5>

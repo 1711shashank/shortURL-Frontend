@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import AdminTable from './AdminTable';
 import Box from '@mui/material/Box';
+import AdminTable from './AdminTable';
+import Header from './Header';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import "./App.css";
 
 
 
@@ -36,12 +36,15 @@ async function createSortURL(credentials) {
 
 function AdminPage() {
   const history = useHistory();
-  let [buttonValue, setButtonValue] = useState('Log In');
-  let [checkUserAuth, setCheckUserAuth] = useState();
-  let [userName, setUserName] = useState([]);
-
   const [state, setState] = useState([]);
   const [longUrl, setLongUrl] = useState();
+
+  useEffect(() => {
+    if (localStorage.getItem('Name') !== 'admin') {
+      history.push("/");
+    }
+    fetchUserData();
+  }, [])
 
   async function fetchUserData() {
     if (localStorage.getItem('isLoggedIn')) {
@@ -53,86 +56,41 @@ function AdminPage() {
       });
 
       response = await response.json();
-
-      console.log("response  123", response.res);
-
       setState(response.res);
 
-      console.log("response dashboard: ", state);
+      console.log("response dashboard: ", response);
 
-    }
-  }
-
-  useEffect(() => {
-    if( localStorage.getItem('Name') !== 'admin'){
-      history.push("/");
-    }
-    console.log("1st UserEffect");
-    async function checking() {
-      setCheckUserAuth(localStorage.getItem('isLoggedIn'));
-      if (checkUserAuth === 'true') {
-        let userName = localStorage.getItem('Name');
-        setUserName("Hello " + userName);
-        setButtonValue('Log Out');
-      }
-      else {
-        setUserName("Hello ");
-        setButtonValue('Log In');
-      }
-    }
-    checking();
-  });
-
-  useEffect(() => {
-    console.log("2nd UserEffect");
-    fetchUserData();
-  }, [])
-
-
-  const handleAuth = async (e) => {
-    e.preventDefault();
-    if (buttonValue === 'Log In') {
-      history.push('/login')
-    } else {
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('Name');
-      localStorage.removeItem('token');
-      setButtonValue('Log In');
-      window.location.reload(false);
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     await createSortURL({ "longUrl": longUrl });
     await fetchUserData();
-
   };
 
   return (
-    <div className="App">
-      <h1> Sort URL</h1>
-      <h1 > {userName}  </h1>
-
-      <Button variant="contained" onClick={handleAuth}>{buttonValue}</Button>
-
-      <Box
-        component="form"
-        sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
-      >
-        <TextField
-          id="outlined-basic"
-          label="Enter URL"
-          variant="outlined"
-          onChange={(e) => setLongUrl(e.target.value)}
-        />
-      </Box>
-
-      <AdminTable state={state}/>
+    <div className="AdminPage">
+      <Header />
+      <div className='Page__inputURL'>
+        <Box
+          component="form"
+          sx={{ '& > :not(style)': { m: 1, width: '25ch' }, }}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            id="outlined-basic"
+            label="Enter URL"
+            variant="outlined"
+            onChange={(e) => setLongUrl(e.target.value)}
+          />
+        </Box>
+      </div>
+      <div className='Page__Table'>
+        <AdminTable state={state} />
+      </div>
 
       {/* 
       <table>

@@ -13,19 +13,13 @@ function Header() {
 
 
   useEffect(() => {
-    if( localStorage.getItem('Name') === 'admin'){
-      history.push("/adminPage");
-    }
     console.log("1st UserEffect");
     async function checking() {
       setCheckUserAuth(localStorage.getItem('isLoggedIn'));
       if (checkUserAuth === 'true') {
         let userName = localStorage.getItem('Name');
-
-
         setUserName("Hello " + userName);
         setButtonValue('Log Out');
-
       }
       else {
         setUserName("Hello ");
@@ -55,7 +49,7 @@ function Header() {
   return (
     <div className='header'>
       <div className='header__userName'><h1 > {userName}  </h1></div>
-      <div className='header__heading'> <h1> Sort URL</h1> </div>
+      <div className='header__heading'> <h1> Sort URL </h1> </div>
       <div className='header__loginBtn'>
         <Button variant="contained" onClick={handleAuth}>{buttonValue}</Button>
       </div>
@@ -64,4 +58,4 @@ function Header() {
   )
 }
 
-export default Header
+export default Header;
