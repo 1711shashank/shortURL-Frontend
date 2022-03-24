@@ -7,9 +7,12 @@ import Header from './Header';
 import "./App.css";
 
 async function createSortURL(credentials) {
+  console.log("Working");
+
   try {
 
     var token = localStorage.getItem('token');
+    console.log("Token",token);
     var header = {};
 
     if (token) { header = { 'Content-Type': 'application/json', 'Authorization': token } }
@@ -38,7 +41,7 @@ function UserPage() {
   const [longUrl, setLongUrl] = useState();
 
   useEffect(() => {
-    if (localStorage.getItem('Name') === 'admin') {
+    if (localStorage.getItem('role') === 'admin') {
       history.push("/adminPage");
     }
     fetchUserData();

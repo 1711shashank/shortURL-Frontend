@@ -9,40 +9,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-
-// const rows = [
-//   createData("123@123", "shashank", [{ longUrl: "http://facebook.com", sortUrl: "http://localhost:3000/0eeue2", urlCreatedCount: 5, urlUsedCount: 11 }, { longUrl: "http://facebook.com", sortUrl: "http://localhost:3000/0eeue2", urlCreatedCount: 5, urlUsedCount: 11 }]),
-//   createData("123@123", "shashank", [{ longUrl: "http://facebook.com", sortUrl: "http://localhost:3000/0eeue2", urlCreatedCount: 5, urlUsedCount: 11 }, { longUrl: "http://facebook.com", sortUrl: "http://localhost:3000/0eeue2", urlCreatedCount: 5, urlUsedCount: 11 }]),
-//   createData("123@123", "shashank", [{ longUrl: "http://facebook.com", sortUrl: "http://localhost:3000/0eeue2", urlCreatedCount: 5, urlUsedCount: 11 }, { longUrl: "http://facebook.com", sortUrl: "http://localhost:3000/0eeue2", urlCreatedCount: 5, urlUsedCount: 11 }])
-
-// ];
-
-// function createData(userEmail, userName, urlData) {
-//   return { userEmail, userName, temp: urlData };
-// }
-
-// Row.propTypes = {
-//   row: PropTypes.shape({
-//     calories: PropTypes.number.isRequired,
-//     carbs: PropTypes.number.isRequired,
-//     fat: PropTypes.number.isRequired,
-//     history: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         amount: PropTypes.number.isRequired,
-//         customerId: PropTypes.string.isRequired,
-//         date: PropTypes.string.isRequired,
-//       }),
-//     ).isRequired,
-//     name: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired,
-//     protein: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
 
 function Row(props) {
   const { row } = props;
@@ -67,23 +37,22 @@ function Row(props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div"> URL Data </Typography>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Long URL</TableCell>
-                    <TableCell>Short URL</TableCell>
-                    <TableCell>URL Created Before</TableCell>
-                    <TableCell>Short URL Used</TableCell>
+                    <TableCell style={{fontWeight: "bold"}}>Long URL</TableCell>
+                    <TableCell style={{fontWeight: "bold"}}>Short URL</TableCell>
+                    <TableCell style={{fontWeight: "bold"}}>URL Created Before</TableCell>
+                    <TableCell style={{fontWeight: "bold"}}>Short URL Used</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.urlData.map((tempRow) => (
-                    <TableRow key={tempRow.longUrl}>
-                      <TableCell>{tempRow.longUrl}</TableCell>
-                      <TableCell>{tempRow.sortUrl}</TableCell>
-                      <TableCell>{tempRow.urlCreatedCount}</TableCell>
-                      <TableCell>{tempRow.urlUsedCount}</TableCell>
+                  {row.urlData.map((subRow) => (
+                    <TableRow key={subRow.longUrl}>
+                      <TableCell>{subRow.longUrl}</TableCell>
+                      <TableCell style={{color:"blue"}} onClick={ ()=> { window.location.assign( `${subRow.sortUrl}`) } } >{subRow.sortUrl}</TableCell>
+                      <TableCell>{subRow.urlCreatedCount}</TableCell>
+                      <TableCell>{subRow.urlUsedCount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -105,8 +74,8 @@ export default function AdminTable(props) {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>User Name</TableCell>
-            <TableCell>User Email</TableCell>
+            <TableCell style={{fontWeight: "bold"}}>User Name</TableCell>
+            <TableCell style={{fontWeight: "bold"}}>User Email</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -16,17 +16,17 @@ export default function UserTable(props) {
       <Table sx={{ minWidth: 650 }} aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell> Long Url </TableCell>
-            <TableCell> Sort URL </TableCell>
-            <TableCell> URL Created Before </TableCell>
-            <TableCell> Short URL Used </TableCell>
+            <TableCell style={{fontWeight: "bold"}} > Long Url </TableCell>
+            <TableCell style={{fontWeight: "bold"}} > Sort URL </TableCell>
+            <TableCell style={{fontWeight: "bold"}} > URL Created Before </TableCell>
+            <TableCell style={{fontWeight: "bold"}} > Short URL Used </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {state.map((row) => (
             <TableRow>
               <TableCell >{row.longUrl}</TableCell>
-              <TableCell >{row.sortUrl}</TableCell>
+              <TableCell style={{color:"blue"}} onClick={ ()=> { window.location.assign( `${row.sortUrl}`) } } >{row.sortUrl}</TableCell>
               <TableCell >{row.urlCreatedCount}</TableCell>
               <TableCell >{row.urlUsedCount}</TableCell>
             </TableRow>

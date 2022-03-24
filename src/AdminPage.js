@@ -40,7 +40,7 @@ function AdminPage() {
   const [longUrl, setLongUrl] = useState();
 
   useEffect(() => {
-    if (localStorage.getItem('Name') !== 'admin') {
+    if (localStorage.getItem('role') !== 'admin') {
       history.push("/");
     }
     fetchUserData();

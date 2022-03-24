@@ -40,6 +40,8 @@ function Header() {
       localStorage.removeItem('isLoggedIn');
       localStorage.removeItem('Name');
       localStorage.removeItem('token');
+      localStorage.removeItem('role');
+
       window.location.reload(false);
 
     }

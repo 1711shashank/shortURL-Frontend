@@ -40,7 +40,8 @@ export default function Login() {
 
       if (response.message === 'Admin LogIn Successfully') {
         localStorage.setItem('isLoggedIn', true);
-        localStorage.setItem('Name', response.data.user.name);
+        localStorage.setItem('role', 'admin');
+        localStorage.setItem('Name', 'admin');
         localStorage.setItem('token', response.data.token);
         history.push("/adminPage");
       }
