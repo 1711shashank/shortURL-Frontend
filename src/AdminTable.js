@@ -43,7 +43,7 @@ function Row(props) {
                     <TableCell style={{fontWeight: "bold"}}>Long URL</TableCell>
                     <TableCell style={{fontWeight: "bold"}}>Short URL</TableCell>
                     <TableCell style={{fontWeight: "bold"}}>URL Created Before</TableCell>
-                    <TableCell style={{fontWeight: "bold"}}>Short URL Used</TableCell>
+                    <TableCell style={{fontWeight: "bold"}}>Visit Count</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

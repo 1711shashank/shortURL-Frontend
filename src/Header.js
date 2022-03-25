@@ -18,7 +18,7 @@ function Header() {
       setCheckUserAuth(localStorage.getItem('isLoggedIn'));
       if (checkUserAuth === 'true') {
         let userName = localStorage.getItem('Name');
-        setUserName("Hello " + userName);
+        setUserName(userName);
         setButtonValue('Log Out');
       }
       else {

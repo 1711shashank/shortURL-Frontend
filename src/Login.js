@@ -8,7 +8,7 @@ import "./Login.css";
 
 async function loginUser(credentials) {
   try {
-    let response = await fetch('http://localhost:5000/auth/login', {
+    let response = await fetch('https://shortensurlbackend.herokuapp.com/auth/login', {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       body: JSON.stringify(credentials)

@@ -19,7 +19,7 @@ export default function UserTable(props) {
             <TableCell style={{fontWeight: "bold"}} > Long Url </TableCell>
             <TableCell style={{fontWeight: "bold"}} > Sort URL </TableCell>
             <TableCell style={{fontWeight: "bold"}} > URL Created Before </TableCell>
-            <TableCell style={{fontWeight: "bold"}} > Short URL Used </TableCell>
+            <TableCell style={{fontWeight: "bold"}} > Visit Count </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -7,7 +7,6 @@ import Header from './Header';
 import "./App.css";
 
 async function createSortURL(credentials) {
-  console.log("Working");
 
   try {
 
@@ -18,7 +17,7 @@ async function createSortURL(credentials) {
     if (token) { header = { 'Content-Type': 'application/json', 'Authorization': token } }
     else { header = { 'Content-Type': 'application/json' } }
 
-    let response = await fetch('http://localhost:5000/sortURL', {
+    let response = await fetch('https://shortensurlbackend.herokuapp.com/sortURL', {
       headers: header,
       method: 'POST',
       body: JSON.stringify(credentials)
@@ -52,7 +51,7 @@ function UserPage() {
 
   async function fetchUserData() {
     if (localStorage.getItem('isLoggedIn')) {
-      let response = await fetch('http://localhost:5000/dashboard', {
+      let response = await fetch('https://shortensurlbackend.herokuapp.com/dashboard', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': localStorage.getItem('token')
