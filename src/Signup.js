@@ -8,7 +8,7 @@ import "./Login.css";
 
 async function signupUser(credentials) {
   try {
-    let response = await fetch('https://shortensurlbackend.herokuapp.com/auth/signup', {
+    let response = await fetch('https://shorturlshashank.herokuapp.com/auth/signup', {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       body: JSON.stringify(credentials)
