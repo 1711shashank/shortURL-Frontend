@@ -98,7 +98,7 @@ function AdminPage() {
           <th>User Name </th>
           <th>User Email ID</th>
           <th>Long Url</th>
-          <th>Sort URL</th>
+          <th>Short URL</th>
           <th>URL Created Before</th>
           <th>Short URL Used</th>
         </tr>
